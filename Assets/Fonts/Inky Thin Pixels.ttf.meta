@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 1b7ee1146abbff34fb5fb94604b52e00
+timeCreated: 1510595574
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Inky Thin Pixels
+  fontNames:
+  - Inky Thin Pixels
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
