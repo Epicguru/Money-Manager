@@ -21,12 +21,8 @@ public class NewAccountWindow : MonoBehaviour {
         Debug.Log("Creating new account '" + newName + "'...");
 
         string result = Accounts.AddAccount(new Account() { Name = newName });
-        bool success = result == null;
 
-        if (success)
-        {
-            GameObject.Find("Canvas").BroadcastMessage("RefreshAccountView");
-        }
+        bool success = result == null;
 
         return success;
     }

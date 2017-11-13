@@ -1,14 +1,21 @@
 ﻿
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public static class Accounts
 {
+    public static UnityEvent AccountsChanged = new UnityEvent();
+    public static bool Initilised { get; private set; }
     private static Dictionary<string, Account> accounts;
 
     public static void Init()
     {
+        if (Initilised)
+            return;
+
         accounts = new Dictionary<string, Account>();
+        Initilised = true;
     }
 
     public static string AddAccount(Account newAccount)
@@ -36,6 +43,8 @@ public static class Accounts
         }
 
         accounts.Add(newAccount.Name, newAccount);
+
+        AccountsChanged.Invoke();
 
         return null;
     }

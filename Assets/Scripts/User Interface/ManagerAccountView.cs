@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ManagerAccountView : MonoBehaviour {
 
@@ -7,10 +8,10 @@ public class ManagerAccountView : MonoBehaviour {
     public List<ManagerAccountItem> Spawned = new List<ManagerAccountItem>();
     public float ItemHeight;
 
-    public void Update()
+    public void Awake()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-            RefreshAccountView();
+        Accounts.AccountsChanged.AddListener(RefreshAccountView);
+        RefreshAccountView();
     }
 
     public void RefreshAccountView()
