@@ -1,18 +1,18 @@
 fileFormatVersion: 2
-guid: 1b7ee1146abbff34fb5fb94604b52e00
-timeCreated: 1510595574
+guid: f89bddce7c21c154687eb2016810c9ad
+timeCreated: 1510595646
 licenseType: Free
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
-  fontSize: 16
+  fontSize: 72
   forceTextureCase: -2
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: Inky Thin Pixels
+  fontName: Just My Type
   fontNames:
-  - Inky Thin Pixels
+  - Just My Type
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
