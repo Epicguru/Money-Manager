@@ -39,4 +39,15 @@ public static class Accounts
 
         return null;
     }
+
+    public static Dictionary<string, Account>.ValueCollection GetAccounts()
+    {
+        if(accounts == null)
+        {
+            Debug.LogError("Not initialized (null accounts)");
+            return null;
+        }
+
+        return accounts.Values;
+    }
 }

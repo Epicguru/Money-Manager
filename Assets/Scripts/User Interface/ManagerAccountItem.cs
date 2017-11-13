@@ -1,16 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class ManagerAccountItem : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public Text Name;
+
+    public void SetText(string text)
+    {
+        Name.text = text;
+    }
+
+    public string GetText()
+    {
+        return Name.text;
+    }
 }

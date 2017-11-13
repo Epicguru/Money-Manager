@@ -16,15 +16,26 @@ public class NewAccountWindow : MonoBehaviour {
         Input.text = "";
     }
 
-    public void Create(string newName)
+    public bool Create(string newName)
     {
-        Debug.Log("Creating new account '" + newName + "'");
+        Debug.Log("Creating new account '" + newName + "'...");
 
+        string result = Accounts.AddAccount(new Account() { Name = newName });
+        bool success = result == null;
+
+        if (success)
+        {
+            GameObject.Find("Canvas").BroadcastMessage("RefreshAccountView");
+        }
+
+        return success;
     }
 
     public void CreateButtonPressed()
     {
-        Create(Input.text.Trim());
+        bool close = Create(Input.text.Trim());
+        if (!close)
+            return;
         Animator.SetBool("Open", false);
         Animator.enabled = true;
     }
