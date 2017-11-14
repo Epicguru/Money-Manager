@@ -11,7 +11,11 @@ public class ManagerAccountView : MonoBehaviour {
     public void Awake()
     {
         Accounts.AccountsChanged.AddListener(RefreshAccountView);
-        RefreshAccountView();
+    }
+
+    public void Start()
+    {
+        RefreshAccountView();        
     }
 
     public void RefreshAccountView()
