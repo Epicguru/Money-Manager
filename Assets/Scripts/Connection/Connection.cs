@@ -1,49 +1,36 @@
-﻿using System.Net;
-using System.Data.SqlClient;
-using System;
-using UnityEngine;
+﻿using MySql.Data.MySqlClient;
 using System.Data;
+using UnityEngine;
 
 public static class Connection
 {
     public static void Test()
     {
+        // Connect to database
+        string connectionString =
+          "Server=www.exbdirect.com;" +
+          "Database=exbdirec_MoneyManager;" +
+          "User ID=exbdirec_Test;" +
+          "Password=TestPassword;";
 
-        //Connecting to remote Microsoft SQL Database Server
+        IDbConnection dbcon;
+        dbcon = new MySqlConnection(connectionString);
+        dbcon.Open();
+        Debug.Log(dbcon.State);
+        IDbCommand dbcmd = dbcon.CreateCommand();
 
-        const string USERNAME = "exbdirec_Admin";
-        const string PASSWORD = ";%+6WUSunXbH";
-        const string DATABASE_NAME = "exbdirec_MoneyManager";
-        const string IP = "176.67.162.22";
+        string command = "CREATE TABLE accounts (id INT PRIMARY KEY, name VARCHAR(16), balance INT DEFAULT 0);";
 
-        const string TABLE_NAME = "accounts";
+        dbcmd.CommandText = command;
+        dbcmd.ExecuteNonQuery();
 
-        SqlConnection conn = new SqlConnection(MakeLogin(USERNAME, PASSWORD, DATABASE_NAME, IP));
-        conn.Open();
-        SqlCommand cmd = new SqlCommand();
-        cmd.CommandType = CommandType.TableDirect;
-        cmd.CommandText =
-            "CREATE TABLE " + TABLE_NAME + " ( " + 
-            "id INT PRIMARY KEY," + 
-            "name VARCHAR NOT NULL, " + 
-            "balance INT DEFAULT 0" + 
-            ");"
-        ;
-        cmd.Connection = conn;
-        try
-        {
-            cmd.ExecuteNonQuery();
-        }
-        catch(Exception e)
-        {
-            // Output Error
-            Debug.LogError(e.StackTrace);
-        }
-
-        conn.Close();
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbcon.Close();
+        dbcon = null;
     }
 
-    public static string MakeLogin(string username, string password, string databaseName, string IP, string port)
+    public static string MakeLogin(string username, string password, string databaseName, string IP)
     {
         return "User ID = " + username + "; Password = '" + password + "'; Database = " + databaseName + "; Server = " + IP;
     }
