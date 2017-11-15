@@ -13,12 +13,4 @@ public class AccountsInit : MonoBehaviour
         Accounts.AddAccount(new Account() { Name = "Curtis", Balance = 100 });
         Accounts.AddAccount(new Account() { Name = "Zak", Balance = 100 });
     }
-
-    public void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Connection.Test();
-        }
-    }
 }
