@@ -1,17 +1,39 @@
 ﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Connection : MonoBehaviour
 {
+    public static Connection Instance;
     public IDbConnection Conn;
+    public string accountsTable = "accounts";
+
+    private UnityAction<SqlAccount[]> toInvoke;
+    private SqlAccount[] invokingAccounts;
+
+    public void Awake()
+    {
+        Instance = this;
+    }
 
     public void Start()
     {
         OpenConnection();
+    }
 
-        SqlAccount[] accounts = GetAllSqlAccounts();
+    public void Update()
+    {
+        if(toInvoke != null)
+        {
+            Loading.Instance.SetOpen(false);
+            toInvoke.Invoke(invokingAccounts);
+            toInvoke = null;
+            invokingAccounts = null;
+        }
     }
 
     public void OnDestroy()
@@ -78,11 +100,11 @@ public class Connection : MonoBehaviour
 
     public SqlAccount GetSqlAccount(int id)
     {
-        using (MySqlDataReader reader = ExecuteReader("SELECT * FROM accounts WHERE id = " + id.ToString()))
+        using (MySqlDataReader reader = ExecuteReader("SELECT * FROM " + accountsTable + " WHERE id = " + id.ToString()))
         {
             while (reader.Read())
             {
-                return MakeAccount(reader);
+                return ParseAccount(reader);
             }
 
             Debug.LogError("No account for that ID was found!");
@@ -90,26 +112,49 @@ public class Connection : MonoBehaviour
         }
     }
 
-    public SqlAccount[] GetAllSqlAccounts()
+    public void GetAllSqlAccounts(UnityAction<SqlAccount[]> done)
     {
-        List<SqlAccount> accounts = new List<SqlAccount>();
+        Loading.Instance.SetOpen(true);
+        Thread thread = new Thread(() => {
 
-        using (MySqlDataReader reader = ExecuteReader("SELECT * FROM accounts"))
-        {
-            while (reader.Read())
-            {                
-                accounts.Add(MakeAccount(reader));
+
+            List<SqlAccount> accounts = new List<SqlAccount>();
+
+            using (MySqlDataReader reader = ExecuteReader("SELECT * FROM " + accountsTable))
+            {
+                while (reader.Read())
+                {
+                    accounts.Add(ParseAccount(reader));
+                }
             }
-        }
 
-        SqlAccount[] array = accounts.ToArray();
-        accounts.Clear();
-        accounts = null;
+            SqlAccount[] array = accounts.ToArray();
+            accounts.Clear();
+            accounts = null;
 
-        return array;
+            this.invokingAccounts = array;
+            this.toInvoke = done;
+        });
+        thread.Start();
     }
 
-    public SqlAccount MakeAccount(MySqlDataReader reader)
+    public bool CreateSqlAccount(string name, int initialBalance)
+    {
+        string command = "INSERT INTO " + accountsTable + "(name, balance) VALUES ('" + name + "', " + initialBalance + ");";
+
+        try
+        {
+            this.ExecuteNonQuery(command);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e.Message);
+            return false;
+        }
+    }
+
+    public SqlAccount ParseAccount(MySqlDataReader reader)
     {
         int id = reader.GetInt32("id");
         string name = reader.GetString("name");

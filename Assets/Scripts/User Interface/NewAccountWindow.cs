@@ -20,20 +20,24 @@ public class NewAccountWindow : MonoBehaviour {
     {
         Debug.Log("Creating new account '" + newName + "'...");
 
-        string result = Accounts.AddAccount(new Account() { Name = newName });
+        bool worked = Connection.Instance.CreateSqlAccount(newName, 0);
 
-        bool success = result == null;
-
-        return success;
+        return worked;
     }
 
     public void CreateButtonPressed()
     {
+        // Create new SQL account: TODO This blocks, indicate progress.
         bool close = Create(Input.text.Trim());
+
         if (!close)
             return;
+
         Animator.SetBool("Open", false);
         Animator.enabled = true;
+
+        // Created account! Query for SQL again...
+        ManagerAccountView.Instance.RefreshAccountView();
     }
 
     public void UponClose()
