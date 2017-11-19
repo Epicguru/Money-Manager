@@ -9,6 +9,13 @@ public class NewAccountWindow : MonoBehaviour {
     public InputField Input;
     private bool closing;
 
+    public static NewAccountWindow Instance;
+
+    public NewAccountWindow()
+    {
+        Instance = this;
+    }
+
     public void OnEnable()
     {
         Animator.SetBool("Open", true);
@@ -33,11 +40,16 @@ public class NewAccountWindow : MonoBehaviour {
         if (!close)
             return;
 
-        Animator.SetBool("Open", false);
-        Animator.enabled = true;
+        AnimClose();
 
         // Created account! Query for SQL again...
         ManagerAccountView.Instance.RefreshAccountView();
+    }
+
+    public void AnimClose()
+    {
+        Animator.SetBool("Open", false);
+        Animator.enabled = true;
     }
 
     public void UponClose()

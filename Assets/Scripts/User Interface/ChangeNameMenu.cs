@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ChangeNameMenu : MonoBehaviour {
 
     public static ChangeNameMenu Instance;
 
     public Animator Animator;
+    public InputField Input;
 
     public ChangeNameMenu()
     {
@@ -18,6 +20,7 @@ public class ChangeNameMenu : MonoBehaviour {
         gameObject.SetActive(true);
         Animator.SetBool("Open", true);
         Animator.enabled = true;
+        Input.text = AccountOptionsWindow.Instance.account.Name;
     }
 
     public void TriggerClose()

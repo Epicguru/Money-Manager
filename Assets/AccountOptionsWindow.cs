@@ -11,6 +11,8 @@ public class AccountOptionsWindow : MonoBehaviour {
 
     public Animator Animator;
 
+    public SqlAccount account;
+
     public AccountOptionsWindow()
     {
         Instance = this;
@@ -25,6 +27,7 @@ public class AccountOptionsWindow : MonoBehaviour {
     {
         Animator.enabled = false;
         gameObject.SetActive(false);
+        account = null;
     }
 
     public void TriggerOpen(SqlAccount account)
@@ -34,6 +37,8 @@ public class AccountOptionsWindow : MonoBehaviour {
         Animator.enabled = true;
 
         Name.text = account.Name;
+
+        this.account = account;
     }
 
     public void TriggerClose()

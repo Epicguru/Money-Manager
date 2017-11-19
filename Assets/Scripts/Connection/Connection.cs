@@ -104,12 +104,14 @@ public class Connection : MonoBehaviour
     {
         Thread thread = new Thread(() =>
         {
-            using (MySqlDataReader reader = ExecuteReader("SELECT * FROM " + accountsTable + " WHERE name = " + name))
+            using (MySqlDataReader reader = ExecuteReader("SELECT * FROM " + accountsTable + " WHERE name = '" + name + "'"))
             {
+
                 while (reader.Read())
                 {
                     SqlAccount acc = ParseAccount(reader);
                     callback.Invoke(acc);
+                    return;
                 }
 
                 Debug.LogError("No account for that ID was found!");
@@ -174,7 +176,7 @@ public class Connection : MonoBehaviour
     {
         Thread thread = new Thread(() =>
         {
-            string cmd = "UPDATE " + accountsTable + " SET name = " + newName.Trim() + " WHERE id = " + id.ToString();
+            string cmd = "UPDATE " + accountsTable + " SET name = '" + newName.Trim() + "' WHERE id = " + id.ToString();
             try
             {
                 ExecuteNonQuery(cmd);
@@ -183,6 +185,26 @@ public class Connection : MonoBehaviour
             catch (Exception e)
             {
                 Debug.LogError(e.Message);
+                done.Invoke(false);
+            }
+        });
+        thread.Start();
+    }
+
+    public void RemoveAccount(int id, UnityAction<bool> done)
+    {
+        Thread thread = new Thread(() =>
+        {
+            string cmd = "DELETE FROM " + accountsTable + " WHERE id = " + id.ToString();
+
+            try
+            {
+                ExecuteNonQuery(cmd);
+                done.Invoke(true);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
                 done.Invoke(false);
             }
         });

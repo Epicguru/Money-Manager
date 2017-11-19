@@ -5,6 +5,8 @@ public class ManagerAccountItem : MonoBehaviour {
 
     public Text Name;
 
+    public SqlAccount Account;
+
     public void SetText(string text)
     {
         Name.text = text;
@@ -17,6 +19,7 @@ public class ManagerAccountItem : MonoBehaviour {
 
     public void Edit()
     {
+        Debug.Log("Opening sql for " + Name.text);
         Loading.Instance.SetOpen(true);
         Connection.Instance.GetSqlAccount(Name.text, GotAccount);
     }
@@ -26,8 +29,18 @@ public class ManagerAccountItem : MonoBehaviour {
         if (account == null)
             return;
 
-        Loading.Instance.SetOpen(false);
+        Account = account;        
+    }
 
-        AccountOptionsWindow.Instance.TriggerOpen(account);
+    public void Update()
+    {
+        if(Account != null)
+        {
+            Loading.Instance.SetOpen(false);
+
+            AccountOptionsWindow.Instance.TriggerOpen(Account);
+
+            Account = null;
+        }
     }
 }
