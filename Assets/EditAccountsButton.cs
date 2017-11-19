@@ -5,8 +5,27 @@ using UnityEngine.SceneManagement;
 
 public class EditAccountsButton : MonoBehaviour {
 
+    public bool IsLoading = false;
+
 	public void EditAccounts()
     {
-        SceneManager.LoadScene("Account Managing", LoadSceneMode.Single);
+        StartCoroutine(LoadScene());
+    }
+
+    public IEnumerator LoadScene()
+    {
+        if (IsLoading)
+            yield return null;
+
+        IsLoading = true;
+        Loading.Instance.SetOpen(true);
+
+        AsyncOperation operation = SceneManager.LoadSceneAsync("Account Managing", LoadSceneMode.Single);
+
+
+        while (!operation.isDone)
+        {
+            yield return null;
+        }
     }
 }

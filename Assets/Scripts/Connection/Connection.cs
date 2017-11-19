@@ -5,6 +5,7 @@ using System.Data;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class Connection : MonoBehaviour
 {
@@ -163,6 +164,11 @@ public class Connection : MonoBehaviour
         SqlAccount account = new SqlAccount() { ID = id, Name = name, Balance = balance };
 
         return account;
+    }
+
+    public bool RenameAccount(int id, string newName)
+    {
+        return true;
     }
 
     public string MakeLogin(string username, string password, string databaseName, string IP)
