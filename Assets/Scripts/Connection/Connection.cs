@@ -166,8 +166,21 @@ public class Connection : MonoBehaviour
         return account;
     }
 
-    public bool RenameAccount(int id, string newName)
+    public bool RenameAccount(int id, string newName, UnityAction<bool> done)
     {
+        Thread thread = new Thread(() =>
+        {
+            string cmd = "UPDATE " + accountsTable + " SET name = " + newName.Trim() + " WHERE id = " + id.ToString();
+            try
+            {
+                ExecuteNonQuery(cmd);
+                done.Invoke(true);
+            }
+            catch (Exception e)
+            {
+                done.Invoke(false);
+            }
+        });
         return true;
     }
 
