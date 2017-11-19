@@ -27,11 +27,13 @@ public class AccountOptionsWindow : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    public void TriggerOpen()
+    public void TriggerOpen(SqlAccount account)
     {
         gameObject.SetActive(true);
         Animator.SetBool("Open", true);
         Animator.enabled = true;
+
+        Name.text = account.Name;
     }
 
     public void TriggerClose()

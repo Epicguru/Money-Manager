@@ -30,6 +30,10 @@ public class ManagerAccountView : MonoBehaviour
         }
         Spawned.Clear();
 
+        if(Loading.Instance != null)
+        {
+            Loading.Instance.SetOpen(true);
+        }
         Connection.Instance.GetAllSqlAccounts(CreateObjectsFromAccounts);        
     }
 

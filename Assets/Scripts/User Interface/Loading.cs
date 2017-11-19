@@ -8,6 +8,8 @@ public class Loading : MonoBehaviour {
 
     public bool open = false;
 
+    private bool active = true;
+
     public Loading()
     {
         Instance = this;
@@ -15,7 +17,15 @@ public class Loading : MonoBehaviour {
 
     public void SetOpen(bool open)
     {
+        if (!this.active)
+            return;
         this.open = open;
-        gameObject.SetActive(open);
+        if(gameObject != null)
+            gameObject.SetActive(open);
+    }
+
+    public void OnDestroy()
+    {
+        this.active = false;
     }
 }

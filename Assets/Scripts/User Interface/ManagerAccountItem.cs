@@ -14,4 +14,20 @@ public class ManagerAccountItem : MonoBehaviour {
     {
         return Name.text;
     }
+
+    public void Edit()
+    {
+        Loading.Instance.SetOpen(true);
+        Connection.Instance.GetSqlAccount(Name.text, GotAccount);
+    }
+
+    public void GotAccount(SqlAccount account)
+    {
+        if (account == null)
+            return;
+
+        Loading.Instance.SetOpen(false);
+
+        AccountOptionsWindow.Instance.TriggerOpen(account);
+    }
 }

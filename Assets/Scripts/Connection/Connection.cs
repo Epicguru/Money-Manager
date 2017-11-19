@@ -30,7 +30,8 @@ public class Connection : MonoBehaviour
     {
         if(toInvoke != null)
         {
-            Loading.Instance.SetOpen(false);
+            if(Loading.Instance != null)
+                Loading.Instance.SetOpen(false);
             toInvoke.Invoke(invokingAccounts);
             toInvoke = null;
             invokingAccounts = null;
@@ -99,25 +100,28 @@ public class Connection : MonoBehaviour
         return reader;
     }
 
-    public SqlAccount GetSqlAccount(int id)
+    public void GetSqlAccount(string name, UnityAction<SqlAccount> callback)
     {
-        using (MySqlDataReader reader = ExecuteReader("SELECT * FROM " + accountsTable + " WHERE id = " + id.ToString()))
+        Thread thread = new Thread(() =>
         {
-            while (reader.Read())
+            using (MySqlDataReader reader = ExecuteReader("SELECT * FROM " + accountsTable + " WHERE name = " + name))
             {
-                return ParseAccount(reader);
-            }
+                while (reader.Read())
+                {
+                    SqlAccount acc = ParseAccount(reader);
+                    callback.Invoke(acc);
+                }
 
-            Debug.LogError("No account for that ID was found!");
-            return null;
-        }
+                Debug.LogError("No account for that ID was found!");
+                callback.Invoke(null);
+            }
+        });
+        thread.Start();
     }
 
     public void GetAllSqlAccounts(UnityAction<SqlAccount[]> done)
     {
-        Loading.Instance.SetOpen(true);
         Thread thread = new Thread(() => {
-
 
             List<SqlAccount> accounts = new List<SqlAccount>();
 
@@ -166,7 +170,7 @@ public class Connection : MonoBehaviour
         return account;
     }
 
-    public bool RenameAccount(int id, string newName, UnityAction<bool> done)
+    public void RenameAccount(int id, string newName, UnityAction<bool> done)
     {
         Thread thread = new Thread(() =>
         {
@@ -178,10 +182,11 @@ public class Connection : MonoBehaviour
             }
             catch (Exception e)
             {
+                Debug.LogError(e.Message);
                 done.Invoke(false);
             }
         });
-        return true;
+        thread.Start();
     }
 
     public string MakeLogin(string username, string password, string databaseName, string IP)

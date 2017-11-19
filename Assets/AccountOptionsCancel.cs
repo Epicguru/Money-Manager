@@ -8,5 +8,4 @@ public class AccountOptionsCancel : MonoBehaviour {
     {
         AccountOptionsWindow.Instance.TriggerClose();
     }
-
 }
