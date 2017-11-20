@@ -24,6 +24,7 @@ public class ManagerAccountView : MonoBehaviour
 
     public void RefreshAccountView()
     {
+        Loading.Instance.SetOpen(true);
         foreach (ManagerAccountItem item in Spawned)
         {
             Destroy(item.gameObject);
@@ -66,5 +67,7 @@ public class ManagerAccountView : MonoBehaviour
         {
             Spawned[i++].SetText(x.Name);
         }
+
+        Loading.Instance.SetOpen(false);
     }
 }

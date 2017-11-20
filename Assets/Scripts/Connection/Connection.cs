@@ -12,6 +12,7 @@ public class Connection : MonoBehaviour
     public static Connection Instance;
     public IDbConnection Conn;
     public string accountsTable = "accounts";
+    public string logTable = "changeLog";
 
     private UnityAction<SqlAccount[]> toInvoke;
     private SqlAccount[] invokingAccounts;
@@ -215,6 +216,26 @@ public class Connection : MonoBehaviour
     {
         return "User ID = " + username + "; Password = '" + password + "'; Database = " + databaseName + "; Server = " + IP;
     }
+
+    public void AddLog(int id, string log)
+    {
+        string cmd = "INSERT INTO " + logTable + " (id, description) VALUES (" + id.ToString() + ", '" + log.Trim() + "');";
+
+        // Automatically sets the current date and time.
+
+        ExecuteNonQuery(cmd);
+    }
+
+    public void GetAllLogsFor(int id, UnityAction<SqlDescription[]> done)
+    {
+        Thread thread = new Thread(() => 
+        {
+            List<SqlDescription> descriptions = new List<SqlDescription>();
+
+
+        });
+        thread.Start();
+    }
 }
 
 public class SqlAccount
@@ -222,4 +243,10 @@ public class SqlAccount
     public int ID;
     public string Name;
     public int Balance;
+}
+
+public class SqlDescription
+{
+    DateTime time;
+    public string description;
 }
