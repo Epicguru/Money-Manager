@@ -77,7 +77,7 @@ public class HistoryView : MonoBehaviour {
         {
             HistoryItem item = Instantiate(Prefab, Content).GetComponent<HistoryItem>();
 
-            item.RefreshText(Convert.BalanceToCurrency(desc.BalanceChange), desc.BalanceChange > 0 ? Positive : Negative, desc.Time.ToShortDateString(), desc.Description);
+            item.RefreshText(Convert.BalanceToCurrency(desc.BalanceChange), desc.BalanceChange > 0 ? Positive : Negative, desc.Time.ToString("dd MMMM, yyyy"), desc.Description);
 
             (item.transform as RectTransform).anchoredPosition = new Vector2(20, -370 * index - 20);
 
