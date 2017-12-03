@@ -228,6 +228,7 @@ public class Connection : MonoBehaviour
 
     public void GetAllLogsFor(int id, UnityAction<SqlDescription[]> done)
     {
+        // TODO finish me.
         Thread thread = new Thread(() => 
         {
             List<SqlDescription> descriptions = new List<SqlDescription>();
