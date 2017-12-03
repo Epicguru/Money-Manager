@@ -11,6 +11,7 @@ public class ChangeBalanceView : MonoBehaviour {
     public InputField Notes;
 
     private SqlAccount account;
+    private bool done;
 
     public ChangeBalanceView()
     {
@@ -19,8 +20,6 @@ public class ChangeBalanceView : MonoBehaviour {
 
     public void Open(SqlAccount account)
     {
-        // TODO add acount input.
-
         gameObject.SetActive(true);
 
         BalanceChange.text = "";
@@ -34,6 +33,9 @@ public class ChangeBalanceView : MonoBehaviour {
         gameObject.SetActive(false);
 
         account = null;
+
+        AccountsView.Instance.Refresh();
+        AccountDetailsView.Instance.OpenAccount(AccountDetailsView.Instance.ID);
     }
 
     public void Submit()
@@ -50,13 +52,30 @@ public class ChangeBalanceView : MonoBehaviour {
 
         string note = Notes.text.Trim();
 
+        Loading.Instance.SetOpen(true);
         Connection.Instance.AddLog(account.ID, note);
+        Connection.Instance.UpdateAccountBalance(account.ID, balanceChange, DoneThreaded);
 
-         Close();
     }
 
-    public void LogDone()
+    public void Update()
     {
+        if(done == true)
+        {
+            done = false;
 
+            Done();
+        }
+    }
+
+    private void DoneThreaded()
+    {
+        done = true;
+    }
+
+    private void Done()
+    {
+        Loading.Instance.SetOpen(false);
+        Close();
     }
 }

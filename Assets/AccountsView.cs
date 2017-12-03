@@ -28,6 +28,8 @@ public class AccountsView : MonoBehaviour {
         Loading.Instance.SetOpen(true);
 
         Connection.Instance.GetAllSqlAccounts(AccountsLoaded);
+
+        Debug.Log("Refreshing...");
     }
 
     private void AccountsLoaded(SqlAccount[] accounts)
@@ -54,6 +56,8 @@ public class AccountsView : MonoBehaviour {
             itemInstance.Balance = Convert.BalanceToCurrency(account.Balance);
             itemInstance.BalanceColour = account.Balance == 0 ? Neutral : account.Balance > 0 ? Positive : Negative;
             itemInstance.ID = account.ID;
+
+            Spawned.Add(itemInstance.gameObject);
 
             index++;
         }

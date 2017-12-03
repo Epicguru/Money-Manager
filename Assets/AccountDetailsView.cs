@@ -8,6 +8,7 @@ public class AccountDetailsView : MonoBehaviour {
     public static AccountDetailsView Instance;
 
     public Text Title;
+    public int ID;
     public Text CurrentBalance;
     public HistoryViewOpen HistoryButton;
     public Button ChangeBalanceButton;
@@ -39,9 +40,11 @@ public class AccountDetailsView : MonoBehaviour {
         if(ID == -1)
         {
             Set(null);
+            this.ID = -1;
             return;
         }
 
+        this.ID = ID;
         Loading.Instance.SetOpen(true);
         Connection.Instance.GetSqlAccount(ID, SetPending);
     }

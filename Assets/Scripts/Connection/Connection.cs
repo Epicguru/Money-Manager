@@ -143,6 +143,22 @@ public class Connection : MonoBehaviour
         thread.Start();
     }
 
+    public SqlAccount GetSqlAccount(int id)
+    {
+        using (MySqlDataReader reader = ExecuteReader("SELECT * FROM " + accountsTable + " WHERE id = " + id.ToString()))
+        {
+
+            while (reader.Read())
+            {
+                SqlAccount acc = ParseAccount(reader);
+                return acc;
+            }
+
+            Debug.LogError("No account for that ID was found!");
+            return null;
+        }
+    }
+
     public void GetAllSqlAccounts(UnityAction<SqlAccount[]> done)
     {
         Thread thread = new Thread(() => {
@@ -181,6 +197,22 @@ public class Connection : MonoBehaviour
             Debug.LogError(e.Message);
             return false;
         }
+    }
+
+    public void UpdateAccountBalance(int Id, int balanceChange, UnityAction done)
+    {
+        Thread thread = new Thread(() => 
+        {
+            SqlAccount account = GetSqlAccount(Id);
+
+            int currentBalance = account.Balance;
+            int updated = currentBalance + balanceChange;
+
+            ExecuteNonQuery("UPDATE " + accountsTable + " SET balance = " + updated.ToString() + " WHERE id = " + account.ID);
+
+            done.Invoke();
+        });
+        thread.Start();
     }
 
     public SqlAccount ParseAccount(MySqlDataReader reader)
@@ -258,11 +290,18 @@ public class Connection : MonoBehaviour
 
             using (MySqlDataReader reader = ExecuteReader(cmd))
             {
-                string notes = reader.GetString("description");
-                DateTime time = reader.GetDateTime("time");
+                while (reader.Read())
+                {
+                    string notes = reader.GetString("description");
+                    DateTime time = reader.GetDateTime("time");
 
-                SqlDescription description = new SqlDescription() { description = notes, time = time };
+                    SqlDescription description = new SqlDescription() { description = notes, time = time };
+
+                    descriptions.Add(description);
+                }
             }
+
+            done.Invoke(descriptions.ToArray());
         });
         thread.Start();
     }

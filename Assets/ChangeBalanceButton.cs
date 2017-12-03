@@ -7,6 +7,8 @@ public class ChangeBalanceButton : MonoBehaviour {
 
     public Button Button;
 
+    private SqlAccount account;
+
     public void Enable()
     {
         Button.interactable = true;
@@ -19,7 +21,32 @@ public class ChangeBalanceButton : MonoBehaviour {
 
     public void Pressed()
     {
-        ChangeBalanceView.Instance.Open();
+        int id = AccountDetailsView.Instance.ID;
+
+        if (id == -1)
+            return;
+
+        Loading.Instance.SetOpen(true);
+        Connection.Instance.GetSqlAccount(id, GotAccountThreaded);
     }
 
+    public void Update()
+    {
+        if(account != null)
+        {
+            GotAccount(account);
+            account = null;
+        }
+    }
+
+    private void GotAccountThreaded(SqlAccount account)
+    {
+        this.account = account;
+    }
+
+    public void GotAccount(SqlAccount account)
+    {
+        Loading.Instance.SetOpen(false);
+        ChangeBalanceView.Instance.Open(account);
+    }
 }

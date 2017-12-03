@@ -5773,10 +5773,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f593d5386ddfac440b74064cf4c6f8c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Instance: {fileID: 2089943296}
   Title: {fileID: 2089943293}
+  ID: 0
   CurrentBalance: {fileID: 1696902358}
   HistoryButton: {fileID: 1394843879}
+  ChangeBalanceButton: {fileID: 1391090745}
 --- !u!1 &2111576538
 GameObject:
   m_ObjectHideFlags: 0
