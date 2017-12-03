@@ -9,6 +9,8 @@ public class AccountItem : MonoBehaviour {
     public string Balance = "123.45$";
     public Color BalanceColour = Color.green;
 
+    public int ID;
+
     public Text NameText, BalanceText;
     public bool ConstantUpdate = true;
 
@@ -25,7 +27,7 @@ public class AccountItem : MonoBehaviour {
 
     public void ButtonPressed()
     {
-        Debug.Log("Pressed!");
+        AccountDetailsView.Instance.OpenAccount(ID);
     }
 
     public void RefreshText()

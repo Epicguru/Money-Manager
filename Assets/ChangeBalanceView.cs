@@ -10,12 +10,14 @@ public class ChangeBalanceView : MonoBehaviour {
     public InputField BalanceChange;
     public InputField Notes;
 
+    private SqlAccount account;
+
     public ChangeBalanceView()
     {
         Instance = this;
     }
 
-    public void Open()
+    public void Open(SqlAccount account)
     {
         // TODO add acount input.
 
@@ -23,24 +25,38 @@ public class ChangeBalanceView : MonoBehaviour {
 
         BalanceChange.text = "";
         Notes.text = "";
+
+        this.account = account;
     }
 
     public void Close()
     {
         gameObject.SetActive(false);
+
+        account = null;
     }
 
     public void Submit()
     {
-        // TODO implement.
+        if (string.IsNullOrEmpty(BalanceChange.text.Trim()))
+            return;
 
-        Debug.Log("Submitting ");
+        float currency = float.Parse(BalanceChange.text.Trim());
 
-        bool worked = true;
+        if (currency == 0)
+            return;
 
-        if (worked)
-        {
-            Close();
-        }
+        int balanceChange = Convert.CurrencyToBalance(currency);
+
+        string note = Notes.text.Trim();
+
+        Connection.Instance.AddLog(account.ID, note);
+
+         Close();
+    }
+
+    public void LogDone()
+    {
+
     }
 }

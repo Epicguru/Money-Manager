@@ -115,6 +115,27 @@ public class Connection : MonoBehaviour
                     return;
                 }
 
+                Debug.LogError("No account for that name was found!");
+                callback.Invoke(null);
+            }
+        });
+        thread.Start();
+    }
+
+    public void GetSqlAccount(int id, UnityAction<SqlAccount> callback)
+    {
+        Thread thread = new Thread(() =>
+        {
+            using (MySqlDataReader reader = ExecuteReader("SELECT * FROM " + accountsTable + " WHERE id = " + id.ToString()))
+            {
+
+                while (reader.Read())
+                {
+                    SqlAccount acc = ParseAccount(reader);
+                    callback.Invoke(acc);
+                    return;
+                }
+
                 Debug.LogError("No account for that ID was found!");
                 callback.Invoke(null);
             }
@@ -237,7 +258,10 @@ public class Connection : MonoBehaviour
 
             using (MySqlDataReader reader = ExecuteReader(cmd))
             {
+                string notes = reader.GetString("description");
+                DateTime time = reader.GetDateTime("time");
 
+                SqlDescription description = new SqlDescription() { description = notes, time = time };
             }
         });
         thread.Start();
@@ -253,6 +277,6 @@ public class SqlAccount
 
 public class SqlDescription
 {
-    DateTime time;
+    public DateTime time;
     public string description;
 }
