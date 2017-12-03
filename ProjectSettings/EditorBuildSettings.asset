@@ -11,3 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Account Managing.unity
     guid: a59ca564814d7c9409c119cefc639fe1
+  - enabled: 1
+    path: Assets/Scenes/Account View.unity
+    guid: fd804954ff4b0d54fb8cb2167f6efd8f
