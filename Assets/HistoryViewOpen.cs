@@ -26,6 +26,7 @@ public class HistoryViewOpen : MonoBehaviour {
 
     public void Pressed()
     {
-        HistoryView.Instance.Open();
+        if(AccountDetailsView.Instance.ID != -1)
+            HistoryView.Instance.Open(AccountDetailsView.Instance.ID);
     }
 }

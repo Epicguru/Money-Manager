@@ -1,4 +1,6 @@
 ﻿
+using UnityEngine;
+
 public static class Convert
 {
     public static string BalanceToCurrency(int balance)
@@ -9,6 +11,6 @@ public static class Convert
 
     public static int CurrencyToBalance(float currency)
     {
-        return (int)(currency * 100);
+        return Mathf.RoundToInt(currency * 100f);
     }
 }

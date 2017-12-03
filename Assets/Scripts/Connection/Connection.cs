@@ -270,9 +270,9 @@ public class Connection : MonoBehaviour
         return "User ID = " + username + "; Password = '" + password + "'; Database = " + databaseName + "; Server = " + IP;
     }
 
-    public void AddLog(int id, string log)
+    public void AddLog(int id, string log, int balanceChange)
     {
-        string cmd = "INSERT INTO " + logTable + " (id, description) VALUES (" + id.ToString() + ", '" + log.Trim() + "');";
+        string cmd = "INSERT INTO " + logTable + " (id, description, balanceChange) VALUES (" + id.ToString() + ", '" + log.Trim() + "', " + balanceChange.ToString() + ");";
 
         // Automatically sets the current date and time.
 
@@ -286,7 +286,7 @@ public class Connection : MonoBehaviour
         {
             List<SqlDescription> descriptions = new List<SqlDescription>();
 
-            string cmd = "";
+            string cmd = "SELECT * FROM " + logTable + " WHERE id = " + id.ToString() + ";";
 
             using (MySqlDataReader reader = ExecuteReader(cmd))
             {
@@ -294,8 +294,9 @@ public class Connection : MonoBehaviour
                 {
                     string notes = reader.GetString("description");
                     DateTime time = reader.GetDateTime("time");
+                    int balanceChange = reader.GetInt32("balanceChange");
 
-                    SqlDescription description = new SqlDescription() { description = notes, time = time };
+                    SqlDescription description = new SqlDescription() { Description = notes, Time = time, BalanceChange = balanceChange };
 
                     descriptions.Add(description);
                 }
@@ -316,6 +317,7 @@ public class SqlAccount
 
 public class SqlDescription
 {
-    public DateTime time;
-    public string description;
+    public DateTime Time;
+    public string Description;
+    public int BalanceChange;
 }

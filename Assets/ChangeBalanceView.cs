@@ -53,7 +53,7 @@ public class ChangeBalanceView : MonoBehaviour {
         string note = Notes.text.Trim();
 
         Loading.Instance.SetOpen(true);
-        Connection.Instance.AddLog(account.ID, note);
+        Connection.Instance.AddLog(account.ID, note, balanceChange);
         Connection.Instance.UpdateAccountBalance(account.ID, balanceChange, DoneThreaded);
 
     }
