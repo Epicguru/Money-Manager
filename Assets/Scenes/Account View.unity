@@ -4133,7 +4133,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1937268586
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4200,6 +4200,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BalanceChange: {fileID: 1219045496}
   Notes: {fileID: 259487877}
+  Title: {fileID: 751393072}
 --- !u!1 &1948608317
 GameObject:
   m_ObjectHideFlags: 0

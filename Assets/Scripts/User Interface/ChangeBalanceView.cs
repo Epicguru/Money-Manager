@@ -10,6 +10,8 @@ public class ChangeBalanceView : MonoBehaviour {
     public InputField BalanceChange;
     public InputField Notes;
 
+    public Text Title;
+
     private SqlAccount account;
     private bool done;
 
@@ -26,6 +28,8 @@ public class ChangeBalanceView : MonoBehaviour {
         Notes.text = "";
 
         this.account = account;
+
+        Title.text = account.Name.Trim();
     }
 
     public void Close()
