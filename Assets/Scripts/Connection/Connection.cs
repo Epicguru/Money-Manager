@@ -232,7 +232,12 @@ public class Connection : MonoBehaviour
         {
             List<SqlDescription> descriptions = new List<SqlDescription>();
 
+            string cmd = "";
 
+            using (MySqlDataReader reader = ExecuteReader(cmd))
+            {
+
+            }
         });
         thread.Start();
     }
