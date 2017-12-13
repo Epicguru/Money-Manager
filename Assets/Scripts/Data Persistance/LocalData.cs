@@ -71,6 +71,7 @@ public class LocalData : MonoBehaviour {
             JsonSerializerSettings settings = new JsonSerializerSettings();
             settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
             settings.DateParseHandling = DateParseHandling.DateTime;
+            settings.Formatting = Formatting.Indented;
             string text = JsonConvert.SerializeObject(log, settings);
 
             StreamWriter writer = null;
