@@ -4,8 +4,13 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class RecurringLog : MonoBehaviour // TODO not monobehaviour!
+[System.Serializable]
+public class RecurringChange
 {
     public string Name;
     public int DayInterval;
+    public DateTime LastDate;
+    public int Change;
+    public string Accounts;
+
 }
