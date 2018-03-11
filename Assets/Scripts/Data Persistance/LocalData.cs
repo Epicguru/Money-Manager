@@ -26,7 +26,7 @@ public class LocalData : MonoBehaviour {
 
         foreach (RecurringChange log in ReadAllRecurringLogs(path))
         {
-            Debug.Log(now.Subtract(log.LastDate).Minutes + " minutes since " + log.Name);
+            Debug.Log(now.Subtract(log.LastDate).TotalDays + " minutes since " + log.Name);
         }
 
         foreach(RecurringChange log in Logs)
