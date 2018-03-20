@@ -43,14 +43,9 @@ public class AccountsView : MonoBehaviour {
     {
         ClearObjects();
 
-        int index = 0;
-        float space = 110f;
-
         foreach(SqlAccount account in accounts)
         {
             AccountItem itemInstance = Instantiate(Prefab, Content).GetComponent<AccountItem>();
-
-            (itemInstance.transform as RectTransform).anchoredPosition = new Vector2(0, (-space * index) - 10);
 
             itemInstance.Name = account.Name;
             itemInstance.Balance = Convert.BalanceToCurrency(account.Balance);
@@ -58,12 +53,7 @@ public class AccountsView : MonoBehaviour {
             itemInstance.ID = account.ID;
 
             Spawned.Add(itemInstance.gameObject);
-
-            index++;
-        }
-
-        Content.sizeDelta = new Vector2(0, index * space + 10);
-        
+        }        
     }
 
     private void ClearObjects()
